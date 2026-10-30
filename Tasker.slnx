@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Tasker.Tests/Tasker.Tests.csproj" />
   <Project Path="Tasker.Web/Tasker.Web.csproj" />
 </Solution>
