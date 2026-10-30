@@ -9,3 +9,8 @@
 .vscode/
 .idea/
 *.user
+
+## SQLite Database
+*.db
+*.db-shm
+*.db-wal
