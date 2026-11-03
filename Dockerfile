@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy project files (odstranili jsme zbytečné testy)
+# Copy project files
 COPY Tasker.Web/Tasker.Web.csproj Tasker.Web/
 
 # Restore dependencies
@@ -24,12 +24,12 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8443
 
-# Změníme vlastníka složky na předpřipraveného uživatele "app"
+# Set ownership of the app folder to the pre-created 'app' user
 USER root
 RUN chown app:app /app
 USER app
 
-# Nakopírujeme soubory s právy pro uživatele "app"
+# Copy files with ownership set to 'app' user
 COPY --chown=app:app --from=publish /app/publish .
 
 ENTRYPOINT ["dotnet", "Tasker.Web.dll"]
