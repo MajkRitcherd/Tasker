@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Tasker.Web.Data;
 
-// Add profile data for application users by adding properties to the ApplicationUser class
+/// <summary>
+/// Represents a user of the application with additional profile information.
+/// </summary>
 public class ApplicationUser : IdentityUser
 {
     /// <summary>
@@ -11,8 +13,13 @@ public class ApplicationUser : IdentityUser
     public required string FirstName { get; set; }
 
     /// <summary>
-    /// Gets or sets the user's last name. 
+    /// Gets or sets the user's last name.
     /// </summary>
-    public required string LastName { get ;set; }
+    public required string LastName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the collection of organization memberships for this user.
+    /// </summary>
+    public ICollection<OrganizationMember> Memberships { get; set; } = [];
 }
 
