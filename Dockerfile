@@ -24,12 +24,12 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8443
 
-# Create non-root user and change ownership of the working directory
-RUN useradd -m -u 1000 appuser && chown appuser:appuser /app
+# Změníme vlastníka složky na předpřipraveného uživatele "app"
+USER root
+RUN chown app:app /app
+USER app
 
-# Copy published files WITH explicit ownership
-COPY --chown=appuser:appuser --from=publish /app/publish .
+# Nakopírujeme soubory s právy pro uživatele "app"
+COPY --chown=app:app --from=publish /app/publish .
 
-# Switch to the non-root user
-USER appuser
 ENTRYPOINT ["dotnet", "Tasker.Web.dll"]
