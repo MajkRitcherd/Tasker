@@ -2,9 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copy project files
+# Copy project files (odstranili jsme zbytečné testy)
 COPY Tasker.Web/Tasker.Web.csproj Tasker.Web/
-COPY Tasker.Tests/Tasker.Tests.csproj Tasker.Tests/
 
 # Restore dependencies
 RUN dotnet restore Tasker.Web/Tasker.Web.csproj
@@ -25,9 +24,12 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8443
 
-# Create non-root user for security
-RUN useradd -m -u 1000 appuser
-USER appuser
+# Create non-root user and change ownership of the working directory
+RUN useradd -m -u 1000 appuser && chown appuser:appuser /app
 
-COPY --from=publish /app/publish .
+# Copy published files WITH explicit ownership
+COPY --chown=appuser:appuser --from=publish /app/publish .
+
+# Switch to the non-root user
+USER appuser
 ENTRYPOINT ["dotnet", "Tasker.Web.dll"]
