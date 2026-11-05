@@ -5,7 +5,6 @@ using Tasker.Web.Components;
 using Tasker.Web.Components.Account;
 using Tasker.Web.Data;
 using Tasker.Web.Features;
-using Tasker.Web.Features.Organizations;
 
 var builder = WebApplication.CreateBuilder(args);
 
