@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Tasker.Web.Components;
 using Tasker.Web.Components.Account;
 using Tasker.Web.Data;
+using Tasker.Web.Features.Organizations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<CreateOrganizationHandler>();
 
 builder.Services.AddAuthentication(options =>
     {

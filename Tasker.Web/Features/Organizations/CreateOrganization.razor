@@ -1,0 +1,67 @@
+@page "/organizations/create"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+
+@attribute [Authorize]
+
+@inject CreateOrganizationHandler Handler
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<h3>Create new organization</h3>
+
+@* Simple Blazor form*@
+<EditForm Model="this" OnValidSubmit="SubmitAsync" FormName="createOrganizationForm">
+    <div class="mb-3">
+        <label class="form-label">Organization name</label>
+        <InputText @bind-Value="OrganizationName" class="form-control" placeholder="e.g. Custom studio" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+@* Show error from Result pattern *@
+@if (ErrorMessage != null)
+{
+    <div class="alert alert-danger mt-3">@ErrorMessage</div>
+}
+
+@code
+{
+    [SupplyParameterFromForm]
+    public string? OrganizationName { get; set; }
+    public string? ErrorMessage { get; set; }
+
+    private async Task SubmitAsync()
+    {
+        ErrorMessage = null;
+
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            ErrorMessage = "Could not authenticate the user.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(OrganizationName))
+        {
+            ErrorMessage = "Please, enter an organization name.";
+            return;
+        }
+
+        var result = await Handler.HandleAsync(userId, OrganizationName);
+
+        if (result.IsSuccess)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = result.ErrorMessage;
+        }
+    }
+}

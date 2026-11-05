@@ -25,7 +25,6 @@ public class CreateOrganizationHandlerTests
 
         var testOrgName = "My test organization";
 
-        // Act: Add initial organization with the same name
         context.Organizations.Add(new Organization()
         {
             Name = testOrgName,
