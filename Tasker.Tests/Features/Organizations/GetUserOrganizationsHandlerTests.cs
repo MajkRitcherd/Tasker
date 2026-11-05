@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using Tasker.Tests.Helpers;
 using Tasker.Web.Data;
 using Tasker.Web.Features.Organizations;
 
@@ -7,7 +7,7 @@ namespace Tasker.Tests.Features.Organizations;
 /// <summary>
 /// Tests for the <see cref="GetUserOrganizationsHandler"/> class.
 /// </summary>
-public class GetUserOrganizationsHandlerTests
+public class GetUserOrganizationsHandlerTests : DbTest
 {
     /// <summary>
     /// Tests that when a user has multiple organizations, only organizations
@@ -18,29 +18,24 @@ public class GetUserOrganizationsHandlerTests
     public async Task HandleAsync_UserHasOrganization_ReturnsOnlyUserOrganizations()
     {
         // ARRANGE
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
-
-        using var context = new ApplicationDbContext(options);
-        var handler = new GetUserOrganizationsHandler(context);
+        var handler = new GetUserOrganizationsHandler(Context);
 
         var myUserId = "user-999";
         var otherUserId = "user-1000";
 
         var org1 = new Organization { Name = "My first organization", CreatedByUserId = myUserId };
-        context.Organizations.Add(org1);
-        context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org1, Role = "Owner" });
+        Context.Organizations.Add(org1);
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org1, Role = "Owner" });
 
         var org2 = new Organization { Name = "Shared organization", CreatedByUserId = otherUserId };
-        context.Organizations.Add(org2);
-        context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org2, Role = "Member" });
+        Context.Organizations.Add(org2);
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org2, Role = "Member" });
 
         var org3 = new Organization { Name = "Foreign organization", CreatedByUserId = otherUserId };
-        context.Organizations.Add(org3);
-        context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org3, Role = "Owner" });
+        Context.Organizations.Add(org3);
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org3, Role = "Owner" });
 
-        await context.SaveChangesAsync();
+        await Context.SaveChangesAsync();
 
         // ACT
         var result = await handler.HandleAsync(myUserId);
@@ -62,21 +57,16 @@ public class GetUserOrganizationsHandlerTests
     public async Task HandleAsync_UserHasNoOrganizations_ReturnsEmptyList()
     {
         // ARRANGE
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
-
-        using var context = new ApplicationDbContext(options);
-        var handler = new GetUserOrganizationsHandler(context);
+        var handler = new GetUserOrganizationsHandler(Context);
 
         var myUserId = "user-999";
         var otherUserId = "user-1000";
 
         var org1 = new Organization { Name = "Foreign organization", CreatedByUserId = otherUserId };
-        context.Organizations.Add(org1);
-        context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org1, Role = "Owner" });
+        Context.Organizations.Add(org1);
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org1, Role = "Owner" });
 
-        await context.SaveChangesAsync();
+        await Context.SaveChangesAsync();
 
         // ACT
         var result = await handler.HandleAsync(myUserId);
