@@ -1,0 +1,84 @@
+@page "/"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
+
+@* Restrict access to authenticated users only *@
+@attribute [Authorize]
+
+@inject GetUserOrganizationsHandler Handler
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+<PageTitle>Tasker - My Organizations</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Organizations</h1>
+    @* Link to the form for creating a new organization *@
+    <a href="/organizations/create" class="btn btn-primary">Create New</a>
+</div>
+
+@if (_organizations == null)
+{
+    <p><em>Loading data...</em></p>
+}
+else if (!_organizations.Any())
+{
+    <div class="alert alert-info">
+        You don't belong to any organization yet. Create your first one!
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var org in _organizations)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@org.Name</h5>
+                        <span class="badge bg-secondary mb-3">Role: @org.UserRole</span>
+                        <br />
+                        @* Button that will navigate to the organization dashboard (to be implemented in the next step) *@
+                        <button class="btn btn-outline-primary btn-sm" @onclick="() => GoToOrganization(org.Id)">
+                            Join
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>
+    /// Holds the list of organizations the user belongs to.
+    /// </summary>
+    private List<OrganizationDto>? _organizations;
+
+    /// <summary>
+    /// Initializes the component by loading the user's organizations when the page is loaded.
+    /// </summary>
+    /// <returns>A task representing the asynchronous initialization operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId != null)
+        {
+            _organizations = await Handler.HandleAsync(userId);
+        }
+    }
+
+    /// <summary>
+    /// Navigates to the specified organization's page.
+    /// </summary>
+    /// <param name="id">The ID of the organization to navigate to.</param>
+    private void GoToOrganization(Guid id)
+    {
+        // This is a placeholder. The organization dashboard page will be implemented in the next step.
+        NavManager.NavigateTo($"/organizations/{id}");
+    }
+}

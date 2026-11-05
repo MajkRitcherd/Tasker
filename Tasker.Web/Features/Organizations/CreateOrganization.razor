@@ -12,7 +12,7 @@
 
 <h3>Create new organization</h3>
 
-@* Simple Blazor form*@
+@* Simple Blazor form for creating a new organization *@
 <EditForm Model="this" OnValidSubmit="SubmitAsync" FormName="createOrganizationForm">
     <div class="mb-3">
         <label class="form-label">Organization name</label>
@@ -30,10 +30,21 @@
 
 @code
 {
+    /// <summary>
+    /// Gets or sets the organization name from the form.
+    /// </summary>
     [SupplyParameterFromForm]
     public string? OrganizationName { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the error message to display to the user.
+    /// </summary>
     public string? ErrorMessage { get; set; }
 
+    /// <summary>
+    /// Handles form submission to create a new organization.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task SubmitAsync()
     {
         ErrorMessage = null;

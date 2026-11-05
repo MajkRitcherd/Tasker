@@ -16,6 +16,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<CreateOrganizationHandler>();
+builder.Services.AddScoped<GetUserOrganizationsHandler>();
 
 builder.Services.AddAuthentication(options =>
     {
