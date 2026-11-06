@@ -18,6 +18,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// </summary>
     public DbSet<Organization> Organizations { get; set; }
 
+    /// <summary>
+    /// Gets or sets the <see cref="DbSet{Project}"/> for project records.
+    /// </summary>
+    public DbSet<Project> Projects { get; set; }
+
+    /// <summary>
+    /// Gets or sets the <see cref="DbSet{TaskItem}"/> for task item records.
+    /// </summary>
+    public DbSet<TaskItem> TaskItems { get; set; }
+
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {
