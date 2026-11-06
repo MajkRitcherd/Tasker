@@ -77,7 +77,7 @@ public class CreateOrganizationHandlerTests : DbTest
         var savedMember = await Context.OrganizationMembers.FirstOrDefaultAsync();
         Assert.NotNull(savedMember);
         Assert.Equal(testUserId, savedMember.UserId);
-        Assert.Equal("Owner", savedMember.Role);
+        Assert.Equal(OrganizationMemberRole.Owner, savedMember.Role);
 
         // Verify the organization and member are linked
         Assert.Equal(savedOrganization.Id, savedMember.OrganizationId);

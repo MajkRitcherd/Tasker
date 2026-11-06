@@ -37,7 +37,7 @@ public class CreateOrganizationHandler(ApplicationDbContext context)
         var organizationMember = new OrganizationMember
         {
             UserId = userId,
-            Role = "Owner",
+            Role = OrganizationMemberRole.Owner,
             OrganizationId = organization.Id,
         };
 

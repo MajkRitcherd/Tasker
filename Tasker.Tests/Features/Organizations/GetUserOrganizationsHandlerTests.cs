@@ -25,15 +25,15 @@ public class GetUserOrganizationsHandlerTests : DbTest
 
         var org1 = new Organization { Name = "My first organization", CreatedByUserId = myUserId };
         Context.Organizations.Add(org1);
-        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org1, Role = "Owner" });
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org1, Role = OrganizationMemberRole.Owner });
 
         var org2 = new Organization { Name = "Shared organization", CreatedByUserId = otherUserId };
         Context.Organizations.Add(org2);
-        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org2, Role = "Member" });
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = myUserId, Organization = org2, Role = OrganizationMemberRole.Member });
 
         var org3 = new Organization { Name = "Foreign organization", CreatedByUserId = otherUserId };
         Context.Organizations.Add(org3);
-        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org3, Role = "Owner" });
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org3, Role = OrganizationMemberRole.Owner });
 
         await Context.SaveChangesAsync();
 
@@ -44,8 +44,8 @@ public class GetUserOrganizationsHandlerTests : DbTest
         Assert.NotNull(result);
         Assert.Equal(2, result.Count);
 
-        Assert.Contains(result, dto => dto.Name == "My first organization" && dto.UserRole == "Owner");
-        Assert.Contains(result, dto => dto.Name == "Shared organization" && dto.UserRole == "Member");
+        Assert.Contains(result, dto => dto.Name == "My first organization" && dto.UserRole == OrganizationMemberRole.Owner);
+        Assert.Contains(result, dto => dto.Name == "Shared organization" && dto.UserRole == OrganizationMemberRole.Member);
         Assert.DoesNotContain(result, dto => dto.Name == "Foreign organization");
     }
 
@@ -64,7 +64,7 @@ public class GetUserOrganizationsHandlerTests : DbTest
 
         var org1 = new Organization { Name = "Foreign organization", CreatedByUserId = otherUserId };
         Context.Organizations.Add(org1);
-        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org1, Role = "Owner" });
+        Context.OrganizationMembers.Add(new OrganizationMember { UserId = otherUserId, Organization = org1, Role = OrganizationMemberRole.Owner });
 
         await Context.SaveChangesAsync();
 

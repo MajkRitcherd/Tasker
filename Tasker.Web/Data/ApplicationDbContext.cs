@@ -17,4 +17,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     /// Gets or sets the <see cref="DbSet{Organization}"/> for organization records.
     /// </summary>
     public DbSet<Organization> Organizations { get; set; }
+
+    /// <inheritdoc />
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<OrganizationMember>()
+            .Property(m => m.Role)
+            .HasConversion<string>();
+    }
 }

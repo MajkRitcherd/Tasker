@@ -28,7 +28,7 @@ public class OrganizationMember
     /// <summary>
     /// Gets or sets the role of the member within the organization (e.g., Admin, Member).
     /// </summary>
-    public required string Role { get; set; }
+    public required OrganizationMemberRole Role { get; set; }
 
     /// <summary>
     /// Gets or sets the navigation property for the associated <see cref="ApplicationUser"/>.
