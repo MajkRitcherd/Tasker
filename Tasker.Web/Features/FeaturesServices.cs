@@ -15,6 +15,7 @@ public static class FeaturesServices
     public static IServiceCollection Register(this IServiceCollection services)
     {
         services.AddScoped<CreateOrganizationHandler>();
+        services.AddScoped<DeleteOrganizationHandler>();
         services.AddScoped<GetUserOrganizationsHandler>();
 
         return services;
