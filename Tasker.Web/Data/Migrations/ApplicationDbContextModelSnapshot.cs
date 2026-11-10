@@ -296,7 +296,7 @@ namespace Tasker.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUTC")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByUserId")
@@ -334,10 +334,10 @@ namespace Tasker.Web.Migrations
                     b.Property<string>("AssignedToUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("CompletedAt")
+                    b.Property<DateTime?>("CompletedAtUTC")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUTC")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByUserId")
@@ -347,17 +347,19 @@ namespace Tasker.Web.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DueDate")
+                    b.Property<DateTime?>("DueDateUTC")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
