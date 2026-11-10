@@ -20,3 +20,22 @@ public record Result<T>(bool IsSuccess, T? Value, string? ErrorMessage)
     /// <returns>A <see cref="Result{T}"/> with <see cref="IsSuccess"/> set to <c>false</c>.</returns>
     public static Result<T> Failure(string errorMessage) => new(false, default, errorMessage);
 }
+
+/// <summary>
+/// Represents the result of an operation that does not return a value.
+/// </summary>
+public record Result(bool IsSuccess, string? ErrorMessage)
+{
+    /// <summary>
+    /// Creates a successful result with no value.
+    /// </summary>
+    /// <returns>A <see cref="Result"/> with <see cref="IsSuccess"/> set to <c>true</c>.</returns>
+    public static Result Success() => new(true, null);
+
+    /// <summary>
+    /// Creates a failed result with the specified error message.
+    /// </summary>
+    /// <param name="errorMessage">The error message describing the failure.</param>
+    /// <returns>A <see cref="Result"/> with <see cref="IsSuccess"/> set to <c>false</c>.</returns>
+    public static Result Failure(string errorMessage) => new(false, errorMessage);
+}
