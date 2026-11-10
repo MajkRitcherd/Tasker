@@ -9,7 +9,7 @@ public class Project
     /// <summary>
     /// The date and time when the project was created.
     /// </summary>
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAtUTC { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// The user who created the project.

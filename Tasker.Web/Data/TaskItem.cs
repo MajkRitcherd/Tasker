@@ -19,12 +19,12 @@ public class TaskItem
     /// <summary>
     /// The optional date and time when the task was completed.
     /// </summary>
-    public DateTime? CompletedAt { get; set; }
+    public DateTime? CompletedAtUTC { get; set; }
 
     /// <summary>
     /// The date and time when the task was created.
     /// </summary>
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAtUTC { get; set; }
 
     /// <summary>
     /// The user who created the task.
@@ -44,7 +44,7 @@ public class TaskItem
     /// <summary>
     /// The optional due date for the task.
     /// </summary>
-    public DateTime? DueDate { get; set; }
+    public DateTime? DueDateUTC { get; set; }
 
     /// <summary>
     /// The unique identifier for the task.
