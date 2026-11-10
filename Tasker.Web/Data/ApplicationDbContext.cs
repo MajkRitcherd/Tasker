@@ -36,5 +36,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<OrganizationMember>()
             .Property(m => m.Role)
             .HasConversion<string>();
+
+        builder.Entity<TaskItem>()
+            .Property(ti => ti.Priority)
+            .HasConversion<string>();
+
+        builder.Entity<TaskItem>()
+            .Property(ti => ti.Status)
+            .HasConversion<string>();
     }
 }
